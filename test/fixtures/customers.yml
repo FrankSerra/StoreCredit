@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  balance: 9.99
+  lastmodified: 2019-09-13 22:35:40
+  notes: MyText
+
+two:
+  name: MyString
+  balance: 9.99
+  lastmodified: 2019-09-13 22:35:40
+  notes: MyText
