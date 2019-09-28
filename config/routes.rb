@@ -2,6 +2,10 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     registrations: "users/registrations"
   }
+
+  post "customers/quickAdd"
+  get  "customers/export"
+
   resources :transactions, except: :update
   resources :customers
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Ledger</title>
+    <title>Store Credit</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -12,7 +12,7 @@
 
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="">Pauly P's credit tracking website for cool kids</a>
+      <a class="navbar-brand" href="">Hidden Masters Store Credit</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -26,6 +26,7 @@
               Options
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <%= link_to 'Export all', customers_export_path, class: "dropdown-item" %>
               <% if defined?(@customer) && @customer.persisted? %>
                 <%= link_to 'Customer details', @customer, class: "dropdown-item" %>
                 <%= link_to "Edit customer", edit_customer_path(@customer), class: "dropdown-item" %>
@@ -39,7 +40,7 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container mainpage">
       <%= yield %>
     </div>
   </body>

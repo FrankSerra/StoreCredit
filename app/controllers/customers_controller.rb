@@ -1,6 +1,7 @@
 class CustomersController < ApplicationController
   before_action :set_customer, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
+  skip_before_action :set_customer, only: :quickAdd
 
   # GET /customers
   # GET /customers.json
@@ -16,6 +17,42 @@ class CustomersController < ApplicationController
   # GET /customers/new
   def new
     @customer = Customer.new
+  end
+
+  # POST /customers/quickAdd
+  def quickAdd
+    puts "quick add"
+    if params[:customer_id] && params[:amount]
+      @trans = Transaction.new
+      @trans.customer_id = params[:customer_id]
+      @trans.amount      = params[:amount].to_f
+      @trans.note        = "Quick add"
+      @trans.stamp       = Time.now
+
+      if @trans.save
+        @trans.customer.lastmodified = @trans.stamp
+        @trans.customer.balance = @trans.customer.balance + @trans.amount
+        @trans.customer.save
+      end
+
+      redirect_to customers_url, notice: '$'+ ( '%.2f' % @trans.amount) + " applied to " + @trans.customer.name + "."
+    end
+  end
+
+  # GET /customers/export
+  def export
+    csv_data = CSV.generate do |csv|
+      csv << ["Name", "Balance", "Notes", "Last Modified"]
+      url_items = Customer.all
+      url_items.each do |url_item|
+        csv << [url_item.name, url_item.balance, url_item.notes, url_item.localtimestring]
+      end
+    end
+
+    fname = "customers_#{DateTime.now.to_i}.csv"
+    send_data csv_data,
+      :type => 'text/csv; charset=utf-8; header=present',
+      :disposition => "attachment; filename=#{fname}.csv"
   end
 
   # GET /customers/1/edit
