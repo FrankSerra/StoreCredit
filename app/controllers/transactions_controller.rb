@@ -16,6 +16,9 @@ class TransactionsController < ApplicationController
   # GET /transactions/new
   def new
     @transaction = Transaction.new
+    if params[:customer_id]
+      @transaction.customer_id = params[:customer_id]
+    end
   end
 
   # GET /transactions/1/edit
@@ -34,7 +37,7 @@ class TransactionsController < ApplicationController
         @transaction.customer.balance = @transaction.customer.balance + @transaction.amount
         @transaction.customer.save
 
-        format.html { redirect_to @transaction.customer, notice: 'Transaction was successfully created.' }
+        format.html { redirect_to @transaction.customer }
         format.json { render :show, status: :created, location: @transaction }
       else
         format.html { render :new }
@@ -68,7 +71,7 @@ class TransactionsController < ApplicationController
     @transaction.destroy
     respond_to do |format|
       cust.save
-      format.html { redirect_to cust, notice: 'Transaction was successfully deleted.' }
+      format.html { redirect_to cust }
       format.json { head :no_content }
     end
   end

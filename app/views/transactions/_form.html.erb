@@ -11,22 +11,35 @@
     </div>
   <% end %>
 
-  <div class="field">
+<% @customer = Customer.find(@transaction.customer_id) %>
+
+<h2 class="text-center">Add credit for <%= @customer.name %></h2>
+<div class="container col-sm-8">
+  <div class="form-group">
     <%= form.label :amount %>
-    <%= form.text_field :amount %>
+    <%= form.text_field :amount, class: "form-control" %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= form.label :note %>
-    <%= form.text_area :note %>
+    <%= form.text_area :note, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= form.label :customer_id %>
-    <%= form.text_field :customer_id %>
+  <div class="form-group">
+    <%= form.hidden_field :customer_id, value: @customer.id %>
   </div>
 
-  <div class="actions">
-    <%= form.submit %>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-sm">
+        <%= form.submit "Add credit", class: "form-control btn btn-primary" %>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-sm">
+        <%= link_to "Cancel", @customer, class: "form-control btn btn-light" %>
+      </div>
+    </div>
   </div>
+</div>
 <% end %>

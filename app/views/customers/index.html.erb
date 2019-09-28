@@ -1,8 +1,30 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Customers</h1>
+<script>
+  function clearFilter() {
+    var inp = $("#customerFilter");
+    inp.val("");
+    inp.keyup();
+  }
 
-<table>
+  $(document).ready(function(){
+    $("#customerFilter").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#customersTable tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  });
+</script>
+
+<div class="input-group mb-3">
+  <input type="text" id="customerFilter" class="form-control" placeholder="Search..." aria-label="Search..." aria-describedby="button-addon2">
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="clearFilter();">Clear</button>
+  </div>
+</div>
+
+<table id="customersTable" class="table">
   <thead>
     <tr>
       <th>Name</th>
@@ -17,15 +39,14 @@
     <% @customers.each do |customer| %>
       <tr>
         <td><%= customer.name %></td>
-        <td><%= '%.2f' % customer.balance %></td>
+        <td><span class="<%= customer.balance < 0 ? "text-danger" : "" %>"><%= '%.2f' % customer.balance %></span></td>
         <td><%= customer.localtimestring %></td>
-        <td><%= customer.notes %></td>
+        <td><%= customer.notesstring %></td>
         <td><%= link_to 'History', customer %></td>
+        <td><%= link_to 'Add credit', new_transaction_path(customer_id: customer.id) %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Customer', new_customer_path %>

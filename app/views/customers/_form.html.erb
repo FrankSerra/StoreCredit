@@ -1,4 +1,4 @@
-<%= form_with(model: customer, local: true) do |form| %>
+<%= form_with(model: customer, local: true, html: { autocomplete: "off" }) do |form| %>
   <% if customer.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(customer.errors.count, "error") %> prohibited this customer from being saved:</h2>
@@ -11,25 +11,36 @@
     </div>
   <% end %>
 
-  <div class="field">
+<div class="container col-sm-8">
+  <div class="form-group">
     <%= form.label :name %>
-    <%= form.text_field :name %>
+    <%= form.text_field :name, class: "form-control" %>
   </div>
 
 <% if customer.persisted? %>
 <% else %>
-  <div class="field">
-    <%= form.label :balance %>
-    <%= form.text_field :balance %>
+  <div class="form-group">
+    <%= form.label "Starting balance" %>
+    <%= form.number_field :balance, step: 0.01, class: "form-control" %>
   </div>
 <% end %>
 
-  <div class="field">
+  <div class="form-group">
     <%= form.label :notes %>
-    <%= form.text_area :notes %>
+    <%= form.text_area :notes, class: "form-control" %>
   </div>
 
-  <div class="actions">
-    <%= form.submit %>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-sm">
+        <%= form.submit (customer.persisted? ? "Save changes" : "Create customer"), class: "form-control btn btn-primary" %>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-sm">
+        <%= link_to "Cancel", customers_path, class: "form-control btn btn-light" %>
+      </div>
+    </div>
   </div>
+</div>
 <% end %>
