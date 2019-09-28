@@ -1,5 +1,6 @@
 class CustomersController < ApplicationController
   before_action :set_customer, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /customers
   # GET /customers.json
@@ -42,7 +43,7 @@ class CustomersController < ApplicationController
   # PATCH/PUT /customers/1.json
   def update
     @customer.lastmodified = Time.now
-    
+
     respond_to do |format|
       if @customer.update(customer_params)
         format.html { redirect_to @customer, notice: 'Customer was successfully updated.' }

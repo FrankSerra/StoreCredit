@@ -1,5 +1,6 @@
 class TransactionsController < ApplicationController
   before_action :set_transaction, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /transactions
   # GET /transactions.json
@@ -31,7 +32,7 @@ class TransactionsController < ApplicationController
       if @transaction.save
         @transaction.customer.lastmodified = @transaction.stamp
         @transaction.customer.save
-        
+
         format.html { redirect_to @transaction.customer, notice: 'Transaction was successfully created.' }
         format.json { render :show, status: :created, location: @transaction }
       else
