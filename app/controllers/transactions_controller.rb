@@ -31,6 +31,7 @@ class TransactionsController < ApplicationController
     respond_to do |format|
       if @transaction.save
         @transaction.customer.lastmodified = @transaction.stamp
+        @transaction.customer.balance = @transaction.customer.balance + @transaction.amount
         @transaction.customer.save
 
         format.html { redirect_to @transaction.customer, notice: 'Transaction was successfully created.' }
@@ -60,9 +61,14 @@ class TransactionsController < ApplicationController
   # DELETE /transactions/1
   # DELETE /transactions/1.json
   def destroy
+    cust = @transaction.customer
+    cust.balance = cust.balance - @transaction.amount
+    cust.lastmodified = Time.now
+
     @transaction.destroy
     respond_to do |format|
-      format.html { redirect_to transactions_url, notice: 'Transaction was successfully destroyed.' }
+      cust.save
+      format.html { redirect_to cust, notice: 'Transaction was successfully deleted.' }
       format.json { head :no_content }
     end
   end

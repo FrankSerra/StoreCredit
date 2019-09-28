@@ -20,9 +20,7 @@
         <td><%= '%.2f' % customer.balance %></td>
         <td><%= customer.localtimestring %></td>
         <td><%= customer.notes %></td>
-        <td><%= link_to 'Details', customer %></td>
-        <td><%= link_to 'Edit', edit_customer_path(customer) %></td>
-        <td><%= link_to 'Delete', customer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'History', customer %></td>
       </tr>
     <% end %>
   </tbody>

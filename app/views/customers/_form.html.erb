@@ -16,10 +16,13 @@
     <%= form.text_field :name %>
   </div>
 
+<% if customer.persisted? %>
+<% else %>
   <div class="field">
     <%= form.label :balance %>
     <%= form.text_field :balance %>
   </div>
+<% end %>
 
   <div class="field">
     <%= form.label :notes %>

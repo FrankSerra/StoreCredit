@@ -1,27 +1,42 @@
 <p id="notice"><%= notice %></p>
 
+<h1><%= @customer.name %></h1>
+<hr />
+<table class="custdetails">
+  <tr>
+    <th><strong>Balance:</strong></th>
+    <td><%= '%.2f' % @customer.balance %></td>
+  </tr>
+  <tr>
+    <th><strong>Last modified:</strong></th>
+    <td><%= @customer.localtimestring %></td>
+  </tr>
+  <tr>
+    <th><strong>Notes:</strong></th>
+    <td><%= @customer.notes %></td>
+  </tr>
+</table>
+<hr />
 <p>
-  <strong>Name:</strong>
-  <%= @customer.name %>
+  <h3>Add credit:</h3>
+  <%= form_with(model: [@customer.transactions.build ], local: true) do |form| %>
+    <p>
+      <%= form.label 'Amount (negative to spend credit)' %>
+      <%= form.number_field :amount, step: 0.01, required: true %>
+    </p>
+    <p>
+      <%= form.label 'Note' %>
+      <%= form.text_field :note %>
+    </p>
+    <p>
+      <%= form.hidden_field :customer_id, value: @customer.id %>
+      <%= form.submit "Add transaction" %>
+    </p>
+  <% end %>
 </p>
-
+<hr />
 <p>
-  <strong>Balance:</strong>
-  <%= @customer.balance %>
-</p>
-
-<p>
-  <strong>Last Modified:</strong>
-  <%= @customer.localtimestring %>
-</p>
-
-<p>
-  <strong>Notes:</strong>
-  <%= @customer.notes %>
-</p>
-
-<p>
-  <strong>Transactions:</strong>
+  <h3>Last 20 transactions:</h3>
   <table>
     <tr>
       <th>Time</th>
@@ -29,7 +44,7 @@
       <th>Note</th>
       <th></th>
     </tr>
-  <% @customer.transactions.order(stamp: :desc).each do |trans| %>
+  <% @customer.transactions.order(stamp: :desc).limit(20).each do |trans| %>
     <tr>
       <td>
         <%= trans.stampstring %>
@@ -48,21 +63,6 @@
   </table>
 </p>
 
-<h3>Add a transaction:</h3>
-<%= form_with(model: [@customer.transactions.build ], local: true) do |form| %>
-  <p>
-    <%= form.label 'Note' %>
-    <%= form.text_field :note %>
-  </p>
-  <p>
-    <%= form.label 'Amount' %>
-    <%= form.number_field :amount, step: 0.01 %>
-  </p>
-  <p>
-    <%= form.hidden_field :customer_id, value: @customer.id %>
-    <%= form.submit "Add transaction" %>
-  </p>
-<% end %>
-
-<%= link_to 'Edit', edit_customer_path(@customer) %> |
+<%= link_to 'Edit', edit_customer_path(customer) %>
+<%= link_to 'Delete', customer, method: :delete, data: { confirm: 'Are you sure?' } %>
 <%= link_to 'Back', customers_path %>
