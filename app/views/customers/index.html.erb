@@ -17,7 +17,7 @@
     <% @customers.each do |customer| %>
       <tr>
         <td><%= customer.name %></td>
-        <td><%= customer.balance %></td>
+        <td><%= '%.2f' % customer.balance %></td>
         <td><%= customer.localtimestring %></td>
         <td><%= customer.notes %></td>
         <td><%= link_to 'Details', customer %></td>

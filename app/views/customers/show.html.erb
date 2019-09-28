@@ -20,5 +20,49 @@
   <%= @customer.notes %>
 </p>
 
+<p>
+  <strong>Transactions:</strong>
+  <table>
+    <tr>
+      <th>Time</th>
+      <th>Amount</th>
+      <th>Note</th>
+      <th></th>
+    </tr>
+  <% @customer.transactions.order(stamp: :desc).each do |trans| %>
+    <tr>
+      <td>
+        <%= trans.stampstring %>
+      </td>
+      <td>
+        <%= '%.2f' % trans.amount %>
+      </td>
+      <td>
+        <%= trans.note %>
+      </td>
+      <td>
+        <%= link_to 'Delete', trans, method: :delete, data: { confirm: 'Are you sure?' } %>
+      </td>
+    <tr>
+  <% end %>
+  </table>
+</p>
+
+<h3>Add a transaction:</h3>
+<%= form_with(model: [@customer.transactions.build ], local: true) do |form| %>
+  <p>
+    <%= form.label 'Note' %>
+    <%= form.text_field :note %>
+  </p>
+  <p>
+    <%= form.label 'Amount' %>
+    <%= form.number_field :amount, step: 0.01 %>
+  </p>
+  <p>
+    <%= form.hidden_field :customer_id, value: @customer.id %>
+    <%= form.submit "Add transaction" %>
+  </p>
+<% end %>
+
 <%= link_to 'Edit', edit_customer_path(@customer) %> |
 <%= link_to 'Back', customers_path %>
