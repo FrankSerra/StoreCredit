@@ -6,7 +6,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
 #  GET /resource/sign_up
   def new
-    super
+    if User.count < 1
+      super
+    else
+      redirect_to "/singleuser.html"
+    end
   end
 
   # POST /resource
@@ -14,8 +18,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if User.count < 1
       super
     else
-      flash[:notice] = "Sorry, only the administrator can have an account here."
-      redirect_to new_user_registration_path
+      redirect_to "/singleuser.html"
     end
  end
 
