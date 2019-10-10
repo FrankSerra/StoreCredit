@@ -20,8 +20,8 @@
       </table>
     </div>
     <div class="col-sm">
-      <h3>Add credit:</h3>
-      <%= form_with(model: [@customer.transactions.build ], local: true) do |form| %>
+      <h3>Adjust credit:</h3>
+      <%= form_with(model: [@customer.transactions.build ], local: true, html: {autocomplete: "off"}) do |form| %>
         <div class="form-group">
           <%= form.label 'Amount (negative to spend credit)' %>
           <%= form.number_field :amount, step: 0.01, required: true, class: "form-control" %>
@@ -63,6 +63,10 @@
         <tr>
       <% end %>
       </table>
+      <% if @customer.transactions.count > 20 %>
+        <hr />
+        Only the last 20 transactions are shown here. <%= @customer.name %> has <strong><%= @customer.transactions.count %></strong> total transactions.
+      <% end %>
     </div>
   </div>
 </div>
