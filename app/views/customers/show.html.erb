@@ -20,21 +20,39 @@
       </table>
     </div>
     <div class="col-sm">
-      <h3>Adjust credit:</h3>
-      <%= form_with(model: [@customer.transactions.build ], local: true, html: {autocomplete: "off"}) do |form| %>
-        <div class="form-group">
-          <%= form.label 'Amount (negative to spend credit)' %>
-          <%= form.number_field :amount, step: 0.01, required: true, class: "form-control" %>
+      <ul class="nav nav-tabs" id="customerTabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="adjust-tab" data-toggle="tab" href="#adjust" role="tab" aria-controls="adjust" aria-selected="true">Adjust credit</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="payouts-tab" data-toggle="tab" href="#payouts" role="tab" aria-controls="payouts" aria-selected="true">Event payouts</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="customerTabContent">
+        <!-- Adjust credit tab -->
+        <div class="tab-pane fade show active" id="adjust" role="tabpanel" aria-labelledby="adjust-tab">
+          <h3>Adjust credit:</h3>
+          <%= form_with(model: [@customer.transactions.build ], local: true, html: {autocomplete: "off"}) do |form| %>
+            <div class="form-group">
+              <%= form.label 'Amount (negative to spend credit)' %>
+              <%= form.number_field :amount, step: 0.01, required: true, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= form.label 'Note' %>
+              <%= form.text_field :note, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= form.hidden_field :customer_id, value: @customer.id %>
+              <%= form.submit "Add transaction", class: "form-control btn btn-primary" %>
+            </div>
+          <% end %>
         </div>
-        <div class="form-group">
-          <%= form.label 'Note' %>
-          <%= form.text_field :note, class: "form-control" %>
+
+        <!-- Payouts tab -->
+        <div class="tab-pane fade" id="payouts" role="tabpanel" aria-labelledby="payouts-tab">
+          <h3>Event payouts</h3>
         </div>
-        <div class="form-group">
-          <%= form.hidden_field :customer_id, value: @customer.id %>
-          <%= form.submit "Add transaction", class: "form-control btn btn-primary" %>
-        </div>
-      <% end %>
+      </div>
     </div>
   </div>
   <div class="row">
