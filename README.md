@@ -1,1 +1,1 @@
-Store credit manager (testing)
+Store credit manager for game store.
