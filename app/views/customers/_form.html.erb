@@ -28,6 +28,12 @@
   <div class="form-group">
     <%= form.label :notes %>
     <%= form.text_area :notes, class: "form-control" %>
+
+    <%= form.label "Tournament entries" %>
+    <%= form.number_field :tourentries, step: 1.0, class: "form-control" %>
+
+    <%= form.label "Tournament packs" %>
+    <%= form.number_field :tourpacks, step: 1.0, class: "form-control" %>
   </div>
 
   <div class="container">

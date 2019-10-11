@@ -1,5 +1,33 @@
 <p id="notice"><%= notice %></p>
 
+<script type="text/javascript">
+    $(document).ready(() => {
+        let url = location.href.replace(/\/$/, "");
+
+        if (location.hash) {
+            const hash = url.split("#");
+            $('#customerTabs a[href="#'+hash[1]+'"]').tab("show");
+            url = location.href.replace(/\/#/, "#");
+            history.replaceState(null, null, url);
+            setTimeout(() => {
+                $(window).scrollTop(0);
+            }, 400);
+        }
+
+        $('a[data-toggle="tab"]').on("click", function() {
+            let newUrl;
+            const hash = $(this).attr("href");
+            if(hash == "#home") {
+                newUrl = url.split("#")[0];
+            } else {
+                newUrl = url.split("#")[0] + hash;
+            }
+            newUrl += "/";
+            history.replaceState(null, null, newUrl);
+        });
+    });
+</script>
+
 <div class="container">
   <div class="row">
     <div class="col-sm">
@@ -25,13 +53,12 @@
           <a class="nav-link active" id="adjust-tab" data-toggle="tab" href="#adjust" role="tab" aria-controls="adjust" aria-selected="true">Adjust credit</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="payouts-tab" data-toggle="tab" href="#payouts" role="tab" aria-controls="payouts" aria-selected="true">Event payouts</a>
+          <a class="nav-link" id="payouts-tab" data-toggle="tab" href="#payouts" role="tab" aria-controls="payouts" aria-selected="true">Tournaments</a>
         </li>
       </ul>
       <div class="tab-content" id="customerTabContent">
         <!-- Adjust credit tab -->
-        <div class="tab-pane fade show active" id="adjust" role="tabpanel" aria-labelledby="adjust-tab">
-          <h3>Adjust credit:</h3>
+        <div class="tab-pane fade show active mt-3 mb-3" id="adjust" role="tabpanel" aria-labelledby="adjust-tab">
           <%= form_with(model: [@customer.transactions.build ], local: true, html: {autocomplete: "off"}) do |form| %>
             <div class="form-group">
               <%= form.label 'Amount (negative to spend credit)' %>
@@ -49,8 +76,49 @@
         </div>
 
         <!-- Payouts tab -->
-        <div class="tab-pane fade" id="payouts" role="tabpanel" aria-labelledby="payouts-tab">
-          <h3>Event payouts</h3>
+        <div class="tab-pane fade mt-3 mb-3" id="payouts" role="tabpanel" aria-labelledby="payouts-tab">
+          <div class="container">
+            <h4>Tournament entries:</h4>
+            <div class="row align-items-center">
+              <div class="col-2 text-center">
+                <h1><%= @customer.tourentries ? @customer.tourentries : 0 %></h1>
+              </div>
+              <div class="col-2">
+                <%= form_with(model: [@customer], local: true) do |form| %>
+                  <%= form.hidden_field :tourentries, value: @customer.tourentries.to_i + 1 %>
+                  <%= form.submit "+", class: "form-control btn btn-success" %>
+                <% end %>
+              </div>
+              <div class="col-2">
+                <%= form_with(model: [@customer], local: true) do |form| %>
+                  <%= form.hidden_field :tourentries, value: @customer.tourentries.to_i - 1 %>
+                  <%= form.submit "-", class: "form-control btn btn-danger" %>
+                <% end %>
+              </div>
+              <div class="col"></div>
+            </div>
+
+            <br />
+            <h4>Tournament packs:</h4>
+            <div class="row align-items-center">
+              <div class="col-2 text-center">
+                <h1><%= @customer.tourpacks ? @customer.tourpacks : 0 %></h1>
+              </div>
+              <div class="col-2">
+                <%= form_with(model: [@customer], local: true) do |form| %>
+                  <%= form.hidden_field :tourpacks, value: @customer.tourpacks.to_i + 1 %>
+                  <%= form.submit "+", class: "form-control btn btn-success" %>
+                <% end %>
+              </div>
+              <div class="col-2">
+                <%= form_with(model: [@customer], local: true) do |form| %>
+                  <%= form.hidden_field :tourpacks, value: @customer.tourpacks.to_i - 1 %>
+                  <%= form.submit "-", class: "form-control btn btn-danger" %>
+                <% end %>
+              </div>
+              <div class="col"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

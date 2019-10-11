@@ -21,7 +21,6 @@ class CustomersController < ApplicationController
 
   # POST /customers/quickAdd
   def quickAdd
-    puts "quick add"
     if params[:customer_id] && params[:amount]
       @trans = Transaction.new
       @trans.customer_id = params[:customer_id]
@@ -81,9 +80,19 @@ class CustomersController < ApplicationController
   def update
     @customer.lastmodified = Time.now
 
+    if customer_params.key?("tourentries") or customer_params.key?("tourpacks")
+      hash = "payouts"
+    else
+      hash = "adjust"
+    end
+
+    puts "+++++++++"
+    puts hash
+    puts "+++++++++"
+
     respond_to do |format|
       if @customer.update(customer_params)
-        format.html { redirect_to @customer, notice: 'Customer was successfully updated.' }
+        format.html { redirect_to customer_path(@customer, anchor: hash), notice: 'Customer was successfully updated.' }
         format.json { render :show, status: :ok, location: @customer }
       else
         format.html { render :edit }
@@ -110,6 +119,6 @@ class CustomersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def customer_params
-      params.require(:customer).permit(:name, :balance, :lastmodified, :notes)
+      params.require(:customer).permit(:name, :balance, :lastmodified, :notes, :tourentries, :tourpacks)
     end
 end

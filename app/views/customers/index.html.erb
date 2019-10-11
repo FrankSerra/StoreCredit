@@ -37,6 +37,8 @@
       <th>Name</th>
       <th>Balance</th>
       <th>Last Modified</th>
+      <th># Entries</th>
+      <th># Packs</th>
       <th>Notes</th>
       <th colspan="5"></th>
     </tr>
@@ -48,6 +50,8 @@
         <td><%= customer.name %></td>
         <td><span class="<%= customer.balance < 0 ? "text-danger" : "" %>"><%= '%.2f' % customer.balance %></span></td>
         <td><%= customer.localtimestring %></td>
+        <td class="text-center"><%= customer.tourentries ? customer.tourentries.to_s : " " %></td>
+        <td class="text-center"><%= customer.tourpacks ? customer.tourpacks.to_s : " " %></td>
         <td><%= customer.notesstring %></td>
         <td><%= button_to '- $0.50', customers_quickAdd_path(customer_id: customer.id, amount: -0.50), class: "btn btn-danger" %></td>
         <td><%= button_to '- $1', customers_quickAdd_path(customer_id: customer.id, amount: -1), class: "btn btn-danger" %></td>

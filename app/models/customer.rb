@@ -9,7 +9,7 @@ class Customer < ApplicationRecord
 
   def notesstring
     if notes.strip.empty?
-      return "---"
+      return ""
     else
       return notes
     end
