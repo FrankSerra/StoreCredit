@@ -30,7 +30,11 @@ class CustomersController < ApplicationController
 
       if @trans.save
         @trans.customer.lastmodified = @trans.stamp
-        @trans.customer.balance = @trans.customer.balance + @trans.amount
+        if @trans.customer.balance
+          @trans.customer.balance = @trans.customer.balance + @trans.amount
+        else
+          @trans.customer.balance = @trans.amount
+        end
         @trans.customer.save
       end
 
