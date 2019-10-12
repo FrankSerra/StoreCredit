@@ -48,7 +48,11 @@
     <% @customers.each do |customer| %>
       <tr>
         <td><%= customer.name %></td>
-        <td><span class="<%= customer.balance < 0 ? "text-danger" : "" %>"><%= '%.2f' % customer.balance %></span></td>
+        <td>
+          <% if customer.balance %>
+            <span class="<%= customer.balance < 0 ? "text-danger" : "" %>"><%= '%.2f' % customer.balance %></span>
+          <% end %>
+        </td>
         <td><%= customer.localtimestring %></td>
         <td class="text-center"><%= customer.tourentries ? customer.tourentries.to_s : " " %></td>
         <td class="text-center"><%= customer.tourpacks ? customer.tourpacks.to_s : " " %></td>

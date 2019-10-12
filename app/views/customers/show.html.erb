@@ -35,7 +35,11 @@
       <table class="custdetails" style="width: 100%; margin: auto;">
         <tr>
           <th class="text-right"><strong>Balance:</strong></th>
-          <td><span class="<%= @customer.balance < 0 ? "text-danger" : "" %>"><%= '%.2f' % @customer.balance %></span></td>
+          <td>
+            <% if @customer.balance %>
+              <span class="<%= @customer.balance < 0 ? "text-danger" : "" %>"><%= '%.2f' % @customer.balance %></span>
+            <% end %>
+          </td>
         </tr>
         <tr>
           <th class="text-right"><strong>Last modified:</strong></th>
